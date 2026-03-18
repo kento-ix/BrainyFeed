@@ -1,6 +1,6 @@
 import { getReviewPapers } from "../models/paperModel.js";
 
-const S2_API_KEY = '65l4dYpVPj4lLuDtQwcq01wF4KbGMswd18y7sQKD';
+const S2_API_KEY = process.env.S2_API_KEY;
 
 export const getRecentReviews = (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
