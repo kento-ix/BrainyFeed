@@ -55,4 +55,7 @@ export const searchReviewPapers = (req, res) => {
             papers: abstractedResults
         });
     })
+    .catch(err => {
+        res.status(500).json({ error: "Internal server error", message: err.message });
+    });
 };
