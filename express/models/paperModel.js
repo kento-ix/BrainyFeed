@@ -1,29 +1,25 @@
 import db from "../database/db.js";
 
-
-//get all review paper
-export const getReviewPapers = (limit = 10, offset = 0) => {
-    return db.prepare(
-        `SELECT * FROM Papers
-        WHERE IsReview = 1
-        ORDER BY Year DESC
-        LIMIT ? OFFSET ?
-    `).all(limit, offset);
-}
-
-export const getReviewPapersByCategory = (categoryName) => {
+export const upsertPaper = (paperId, title, authors, year, sourceUrl, abstract, isReview) => {
     return db.prepare(`
-        SELECT p.* FROM Papers p
-        JOIN Categories c ON p.CategoryID = c.CategoryID
-        WHERE p.IsReview = 1 AND c.Name = ?
-        ORDER BY p.Year DESC
-    `).all(categoryName);
+        INSERT OR IGNORE INTO Papers (PaperID, Title, Authors, Year, SourceURL, Abstract, IsReview)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run(paperId, title, authors, year, sourceUrl, abstract, isReview ? 1 : 0);
 };
 
-export const getRelatedPapers = (reviewId) => {
+export const savePaperForUser = (email, paperId) => {
     return db.prepare(`
-        SELECT p.* FROM Papers p
-        JOIN PaperRelations pr ON p.PaperID = pr.PaperID
-        WHERE pr.ReviewID = ?
-    `).all(reviewId);
+        INSERT OR IGNORE INTO SavedPapers
+        (Email, PaperID)
+        VALUES (?, ?)
+    `).run(email, paperId);
+};
+
+export const getSavedPapersByEmail = (email) => {
+    return db.prepare(`
+        SELECT p.*, sp.SavedAt
+        FROM SavedPapers sp
+        JOIN Papers p ON sp.PaperID = p.PaperID
+        WHERE sp.Email = ?
+    `).all(email);
 };
