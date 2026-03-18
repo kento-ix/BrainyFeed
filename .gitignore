@@ -1,0 +1,12 @@
+# Environment
+.env
+
+# macOS
+.DS_Store
+
+# PDF (course instructions)
+*.pdf
+
+# Parcel build outputs
+express/public/
+react/dist/
