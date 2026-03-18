@@ -1,0 +1,204 @@
+/* ===== Base ===== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: #FAFAFA;
+    color: #212121;
+    line-height: 1.7;
+}
+
+/* ===== Nav ===== */
+.navbar {
+    background-color: #fff;
+    border-bottom: 1px solid #E0E0E0;
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #1565C0;
+    text-transform: uppercase;
+}
+
+/* ===== Layout ===== */
+.main-content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 64px 48px;
+}
+
+.section {
+    margin-bottom: 80px;
+}
+
+/* ===== Typography ===== */
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #0D2137;
+    margin-bottom: 8px;
+    border-bottom: 3px solid #1565C0;
+    padding-bottom: 12px;
+}
+
+.section-subtitle {
+    font-size: 0.95rem;
+    color: #757575;
+    margin-bottom: 32px;
+}
+
+/* ===== Forms ===== */
+.search-form,
+.save-form,
+.email-form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+input[type="text"],
+input[type="email"] {
+    flex: 1;
+    min-width: 240px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid #BDBDBD;
+    border-radius: 4px;
+    background: #fff;
+    color: #212121;
+    transition: border-color 0.2s;
+    outline: none;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus {
+    border-color: #1565C0;
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
+}
+
+button {
+    padding: 12px 28px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #fff;
+    background-color: #1565C0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    text-transform: uppercase;
+}
+
+button:hover:not(:disabled) {
+    background-color: #0D47A1;
+    box-shadow: 0 2px 8px rgba(21, 101, 192, 0.3);
+}
+
+button:disabled {
+    background-color: #BDBDBD;
+    cursor: not-allowed;
+}
+
+/* ===== Paper List ===== */
+.paper-list {
+    list-style: none;
+    display: grid;
+    gap: 24px;
+}
+
+.paper-item {
+    background: #fff;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 28px 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: box-shadow 0.2s;
+}
+
+.paper-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.paper-item h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0D2137;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.paper-item p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.paper-item a {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 0.875rem;
+    color: #1565C0;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.paper-item a:hover {
+    text-decoration: underline;
+}
+
+.paper-id {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: #757575;
+    background: #F5F5F5;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+    user-select: all;
+}
+
+/* ===== Status Messages ===== */
+.loading {
+    color: #1565C0;
+    font-size: 0.95rem;
+    padding: 16px 0;
+}
+
+.success {
+    color: #2E7D32;
+    background: #E8F5E9;
+    border: 1px solid #A5D6A7;
+    border-radius: 4px;
+    padding: 10px 16px;
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+.error {
+    color: #C62828;
+    background: #FFEBEE;
+    border: 1px solid #EF9A9A;
+    border-radius: 4px;
+    padding: 10px 16px;
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
