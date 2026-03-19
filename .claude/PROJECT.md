@@ -14,9 +14,9 @@ Semantic Scholar API でレビュー論文を検索し、専門家向けの Abst
 
 ## 主な機能
 - キーワードでレビュー論文を検索（Semantic Scholar API 経由）
-- 専門的な Abstract を一般向けにわかりやすく要約して表示（独自ロジックで実装、AI API は使用しない）
+- 専門的な Abstract を表示（独自ロジックで実装、AI API は使用しない <- 今回の課題にはオーバースペック）
 - 最近のレビュー論文を一覧表示（DB から取得）
-- （予定）論文を保存する POST 機能
+- 論文を保存する POST 機能
 
 ## 技術スタック
 | 役割 | 技術 |
@@ -34,11 +34,12 @@ Semantic Scholar API でレビュー論文を検索し、専門家向けの Abst
 | POST | （未実装） | 論文の保存など |
 
 ## DB テーブル構成
-- `Categories` — 論文カテゴリ
-- `Papers` — 論文データ（CategoryID で Categories に FK）
-- `PaperRelations` — レビュー論文と個別論文の関係（中間テーブル）
-- `SavedPapers` — ユーザーが保存した論文（※ Users テーブルは削除予定）
-- `Users` — （削除予定：課題でログイン不要と指定されている）
+- `Papers` — 論文データ（PK: PaperID, CHECK 制約: Title長さ, Year範囲, IsReview値）
+- `SavedPapers` — 保存済み論文（複合 PK: Email+PaperID, FK: PaperID → Papers, CHECK: Email形式）
+
+### スターターデータ
+- Papers: 3件（ML/Healthcare, NLP, Climate Change）
+- SavedPapers: 2件（test@example.com に紐付け）
 
 ## 提出前チェックリスト
 - [ ] `CLAUDE.md` を削除
