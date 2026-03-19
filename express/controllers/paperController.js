@@ -43,36 +43,72 @@ export const searchReviewPapers = (req, res) => {
 
         res.json({
             data: papers,
-            links: { self: `/api/v1/papers/search?topic=${topic}` }
+            links: [
+                { 
+                    href: `/api/v1/papers/search?topic=${topic}`, 
+                    rel: "self",       
+                    type: "GET" 
+                },
+                { 
+                    href: `/api/v1/papers/save`,
+                    rel: "save-paper", 
+                    type: "POST" 
+                }
+            ]
         });
     })
-    .catch(err => {
-        res.status(500).json({ error: "Internal server error", message: err.message });
+    .catch(() => {
+        res.status(500).json({ error: "Internal server error" });
     });
 };
 
 export const savePaper = (req, res) => {
     const { email, paperId, title, authors, year, abstract, url, isReview } = req.body;
 
-    try {
-        upsertPaper(paperId, title, authors, year, url, abstract, isReview, );
-        savePaperForUser(email, paperId);
+    upsertPaper(paperId, title, authors, year, url, abstract, isReview);
+    const result = savePaperForUser(email, paperId);
 
-        res.status(201).json({
-            data: { email, paperId },
-            links: { self: `/api/v1/papers/saved?email=${email}` }
-        });
-    } catch (err) {
-        res.status(500).json({ error: "Failed to save paper", message: err.message });
+    if (!result) {
+        return res.status(500).json({ error: "Failed to save paper" });
     }
+
+    res.status(201).json({
+        data: { email, paperId },
+        links: [
+            { 
+                href: `/api/v1/papers/save`,
+                rel: "self",
+                type: "POST" },
+            { 
+                href: `/api/v1/papers/saved?email=${email}`, 
+                rel: "saved-papers", 
+                type: "GET"  
+            }
+        ]
+    });
 };
 
 export const getSavedPapers = (req, res) => {
     const { email } = req.query;
-
     const papers = getSavedPapersByEmail(email);
+
+    if (!papers) {
+        return res.status(404).json({ error: "No saved papers found" });
+    }
+
     res.json({
         data: papers,
-        links: { self: `/api/v1/papers/saved?email=${email}` }
+        links: [
+            {
+                href: `/api/v1/papers/saved?email=${email}`,
+                rel: "self",
+                type: "GET" 
+            },
+            { 
+                href: `/api/v1/papers/save`,
+                rel: "save-paper", 
+                type: "POST" 
+            }
+        ]
     });
 };

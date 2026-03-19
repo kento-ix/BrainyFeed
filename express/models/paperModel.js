@@ -2,7 +2,8 @@ import db from "../database/db.js";
 
 export const upsertPaper = (paperId, title, authors, year, sourceUrl, abstract, isReview) => {
     return db.prepare(`
-        INSERT OR IGNORE INTO Papers (PaperID, Title, Authors, Year, SourceURL, Abstract, IsReview)
+        INSERT OR IGNORE INTO Papers 
+        (PaperID, Title, Authors, Year, SourceURL, Abstract, IsReview)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     `).run(paperId, title, authors, year, sourceUrl, abstract, isReview ? 1 : 0);
 };
