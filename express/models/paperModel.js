@@ -16,11 +16,12 @@ export const savePaperForUser = (email, paperId) => {
     `).run(email, paperId);
 };
 
-export const getSavedPapersByEmail = (email) => {
+export const getSavedPapersByEmail = (email, limit, offset) => {
     return db.prepare(`
         SELECT p.*, sp.SavedAt
         FROM SavedPapers sp
         JOIN Papers p ON sp.PaperID = p.PaperID
         WHERE sp.Email = ?
-    `).all(email);
+        LIMIT ? OFFSET ?
+    `).all(email, limit, offset);
 };

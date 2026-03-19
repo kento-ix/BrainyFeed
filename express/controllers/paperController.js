@@ -90,9 +90,11 @@ export const savePaper = (req, res) => {
 
 export const getSavedPapers = (req, res) => {
     const { email } = req.query;
-    const papers = getSavedPapersByEmail(email);
+    const limit = +req.query.limit || 10;
+    const offset = +req.query.offset || 0;
+    const papers = getSavedPapersByEmail(email, limit, offset);
 
-    if (!papers) {
+    if (papers.length === 0) {
         return res.status(404).json({ error: "No saved papers found" });
     }
 
