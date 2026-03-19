@@ -1,10 +1,13 @@
 # 課題ルール（必ず読むこと）
 
+**回答前に必ず `RULE.txt` を読むこと。** すべての回答・実装判断は RULE.txt の要件に基づくこと。
+
 詳細なルールは `.claude/rules/` を参照:
 - `.claude/rules/api-rules.md` — API・REST 規約・セキュリティ
 - `.claude/rules/database-rules.md` — DB 設計・必須 SQL・プリペアドステートメント
 - `.claude/rules/react-rules.md` — React コンポーネント・フォーム・禁止事項
 - `.claude/rules/general-rules.md` — 提出物・ファイル管理・AI 記録義務
+- `.claude/rules/design-rules.md` — CSS スタイリング・カラー・レイアウト規約
 
 ---
 
