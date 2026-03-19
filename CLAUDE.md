@@ -7,6 +7,10 @@
 - `.claude/rules/general-rules.md` — 提出物・ファイル管理・AI 記録義務
 - `.claude/rules/design-rules.md` — CSS スタイリング・カラー・レイアウト規約
 
+**タスクが完了したら必ず `.claude/PROJECT.md` の該当項目を更新すること。**
+- 完了したタスク: `[ ]` → `[x]`
+- 新しく判明した残タスクは `❌ 残りタスク` セクションに追加する
+
 ---
 
 # プロジェクト概要

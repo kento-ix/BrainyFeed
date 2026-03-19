@@ -7,5 +7,5 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 app.use('/api/v1', apiRoute);
-app.listen(3002, ()=>console.log("listening on 3002"));
+app.listen(3000, ()=>console.log("listening on 3002"));
 

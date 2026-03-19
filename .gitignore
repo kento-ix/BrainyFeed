@@ -1,11 +1,16 @@
+# Dependencies
+node_modules/
+
 # Environment
 .env
 
 # macOS
 .DS_Store
 
-
-# Parcel build outputs
+# Parcel
+.parcel-cache/
 express/public/
 react/dist/
 
+# Database
+*.db
