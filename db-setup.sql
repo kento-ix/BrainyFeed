@@ -1,12 +1,6 @@
-DROP TABLE IF EXISTS PaperRelations;
 DROP TABLE IF EXISTS SavedPapers;
 DROP TABLE IF EXISTS Papers;
-DROP TABLE IF EXISTS Categories;
 
-CREATE TABLE Categories (
-    CategoryID INTEGER PRIMARY KEY AUTOINCREMENT,
-    Name TEXT NOT NULL UNIQUE CHECK(length(Name) > 0)
-);
 
 CREATE TABLE Papers (
     PaperID TEXT PRIMARY KEY,
@@ -14,19 +8,8 @@ CREATE TABLE Papers (
     Authors TEXT,
     Year INTEGER CHECK(Year > 1900 AND Year <= 2100),
     SourceURL TEXT,
-    OriginalAbstract TEXT,
-    SimplifiedAbstract TEXT,
-    IsReview INTEGER DEFAULT 0 CHECK(IsReview IN (0, 1)),
-    CategoryID INTEGER,
-    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
-);
-
-CREATE TABLE PaperRelations (
-    ReviewID TEXT NOT NULL,
-    PaperID TEXT NOT NULL,
-    PRIMARY KEY (ReviewID, PaperID),
-    FOREIGN KEY (ReviewID) REFERENCES Papers(PaperID) ON DELETE CASCADE,
-    FOREIGN KEY (PaperID) REFERENCES Papers(PaperID) ON DELETE CASCADE
+    Abstract TEXT,
+    IsReview INTEGER DEFAULT 0 CHECK(IsReview IN (0, 1))
 );
 
 CREATE TABLE SavedPapers (
@@ -37,45 +20,36 @@ CREATE TABLE SavedPapers (
     FOREIGN KEY (PaperID) REFERENCES Papers(PaperID) ON DELETE CASCADE
 );
 
--- Starter Data
-INSERT INTO Categories (Name) VALUES
-    ('Artificial Intelligence'),
-    ('Biology'),
-    ('Climate Science'),
-    ('Medicine'),
-    ('Physics');
+-- Mock data
+INSERT INTO Papers (PaperID, Title, Authors, Year, SourceURL, Abstract, IsReview) VALUES
+(
+    'sample-paper-1',
+    'A Review of Machine Learning in Healthcare',
+    'John Smith, Jane Doe',
+    2023,
+    'https://www.semanticscholar.org/paper/sample-paper-1',
+    'This review examines the application of machine learning algorithms in healthcare settings, covering diagnostic tools, treatment planning, and patient outcome prediction. Neural networks have shown particular promise in medical imaging tasks.',
+    1
+),
+(
+    'sample-paper-2',
+    'Deep Learning for Natural Language Processing: A Survey',
+    'Alice Johnson, Bob Wilson',
+    2022,
+    'https://www.semanticscholar.org/paper/sample-paper-2',
+    'We survey recent advances in deep learning approaches to natural language processing tasks including text classification, machine translation, and question answering. Transformer architectures have become the dominant paradigm.',
+    1
+),
+(
+    'sample-paper-3',
+    'Climate Change and Biodiversity: A Systematic Review',
+    'Emma Brown, Carlos Garcia',
+    2024,
+    'https://www.semanticscholar.org/paper/sample-paper-3',
+    'This systematic review analyzes the impact of climate change on global biodiversity across terrestrial and marine ecosystems. Rising temperatures and shifting precipitation patterns are causing significant species displacement.',
+    1
+);
 
-INSERT INTO Papers (PaperID, Title, Authors, Year, SourceURL, OriginalAbstract, SimplifiedAbstract, IsReview, CategoryID) VALUES
-    (
-        'paper-001',
-        'A Survey of Large Language Models',
-        'Wayne Xin Zhao, Kun Zhou',
-        2023,
-        'https://arxiv.org/abs/2303.18223',
-        'Language is essentially a complex, intricate system of human expressions governed by grammatical rules...',
-        'This paper reviews the latest AI tools that can understand and generate human language, like ChatGPT.',
-        1,
-        1
-    ),
-    (
-        'paper-002',
-        'Climate Change and Biodiversity: A Review',
-        'John Smith, Emily Brown',
-        2022,
-        'https://example.com/climate-biodiversity',
-        'Global climate change poses significant threats to biodiversity across ecosystems worldwide...',
-        'This paper explains how rising temperatures are causing animals and plants to lose their natural habitats.',
-        1,
-        3
-    ),
-    (
-        'paper-003',
-        'Deep Learning in Medical Imaging',
-        'Sarah Lee, James Kim',
-        2021,
-        'https://example.com/dl-medical',
-        'Deep learning has revolutionized medical imaging analysis by enabling automated detection...',
-        'This paper shows how AI can help doctors detect diseases earlier by analyzing medical scans.',
-        1,
-        4
-    );
+INSERT INTO SavedPapers (Email, PaperID) VALUES
+('test@example.com', 'sample-paper-1'),
+('test@example.com', 'sample-paper-2');
