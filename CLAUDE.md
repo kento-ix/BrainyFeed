@@ -1,7 +1,5 @@
 # 課題ルール（必ず読むこと）
 
-**回答前に必ず `RULE.txt` を読むこと。** すべての回答・実装判断は RULE.txt の要件に基づくこと。
-
 詳細なルールは `.claude/rules/` を参照:
 - `.claude/rules/api-rules.md` — API・REST 規約・セキュリティ
 - `.claude/rules/database-rules.md` — DB 設計・必須 SQL・プリペアドステートメント
