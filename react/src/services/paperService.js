@@ -33,8 +33,8 @@ export function savePaper(email, paper) {
   });
 }
 
-export function getSavedPapers(email) {
-  return fetch(`${BASE_URL}/saved?email=${email}`)
+export function getSavedPapers(email, limit, offset) {
+  return fetch(`${BASE_URL}/saved?email=${email}&limit=${limit}&offset=${offset}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('Error occurred while fetching saved papers');
