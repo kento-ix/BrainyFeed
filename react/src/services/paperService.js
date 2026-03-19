@@ -24,7 +24,8 @@ export function savePaper(email, paper) {
       url: paper.url,
       isReview: paper.isReview
     })
-  }).then(response => {
+  })
+  .then(response => {
     if (!response.ok) {
       throw new Error('Error occurred while saving');
     }

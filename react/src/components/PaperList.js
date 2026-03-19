@@ -5,19 +5,25 @@ const PaperList = props => {
     const [loading, setLoading] = useState(false);
     const [papers, setPapers] = useState([]);
     const [email, setEmail] = useState('');
-    const [savingId, setSavingId] = useState(null);
+    const [, setSavingId] = useState(null);
+
     const [saveError, setSaveError] = useState('');
+    const [fetchError, setFetchError] = useState('');
 
     useEffect(function fetchSearch() {
         if (!props.query) return
 
         setLoading(true);
+        setFetchError('')
         searchPapers(props.query)
             .then(data => {
                 setPapers(data.data || []);
                 setLoading(false);
             })
-            .catch(() => setLoading(false));
+            .catch(e => {
+                setFetchError(e.message);
+                setLoading(false);
+            })
     }, [props.query]);
 
     const handleSave = (paper) => {
@@ -33,13 +39,14 @@ const PaperList = props => {
                 setPapers(papers.map(p => p.id === paper.id ? { ...p, saved: true } : p));
                 setSavingId(null);
             })
-            .catch(() => {
-                setSaveError("Failed to save.");
+            .catch(e => {
+                setSaveError(e.message)
                 setSavingId(null);
             });
     };
 
     return <>
+        {fetchError && <p className="error">{fetchError}</p>}
         {loading ? (
             <p className="loading">Loading...</p>
         ) : (
@@ -61,9 +68,8 @@ const PaperList = props => {
                             />
                             <button
                                 onClick={() => handleSave(paper)}
-                                disabled={savingId === paper.id || paper.saved}
                             >
-                                {savingId === paper.id ? "Saving..." : paper.saved ? "Saved!" : "Save"}
+                                {paper.saved ? "Saved!" : "Save"}
                             </button>
                             {saveError && <p className="error">{saveError}</p>}
                         </li>
