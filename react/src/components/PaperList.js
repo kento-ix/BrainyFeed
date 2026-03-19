@@ -52,8 +52,8 @@ const PaperList = props => {
         ) : (
             <>
                 <ul className="paper-list">
-                    {papers.map((paper) => (
-                        <li key={paper.id} className="paper-item">
+                    {papers.map((paper, index) => (
+                        <li key={index} className="paper-item">
                             <h3>{paper.title}</h3>
                             <p>Year {paper.year}</p>
                             <p>Author {paper.authors}</p>

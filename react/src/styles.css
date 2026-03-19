@@ -176,6 +176,19 @@ button:disabled {
     user-select: all;
 }
 
+/* ===== Pagination ===== */
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.pagination span {
+    font-size: 0.95rem;
+    color: #757575;
+}
+
 /* ===== Status Messages ===== */
 .loading {
     color: #1565C0;
