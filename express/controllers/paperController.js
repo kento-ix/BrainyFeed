@@ -90,8 +90,8 @@ export const savePaper = (req, res) => {
 
 export const getSavedPapers = (req, res) => {
     const { email } = req.query;
-    const limit = +req.query.limit || 10;
-    const offset = +req.query.offset || 0;
+    const limit = Number(req.query.limit) || 5;
+    const offset = Number(req.query.offset) || 0;
     const papers = getSavedPapersByEmail(email, limit, offset);
 
     if (papers.length === 0) {
