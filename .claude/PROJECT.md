@@ -30,8 +30,8 @@ Semantic Scholar API でレビュー論文を検索し、専門家向けの Abst
 | メソッド | パス | 説明 |
 |---------|------|------|
 | GET | `/api/v1/papers/search?topic=` | キーワードでレビュー論文を検索 |
-| GET | `/api/v1/papers/reviews` | DB からレビュー論文を一覧取得 |
-| POST | （未実装） | 論文の保存など |
+| GET | `/api/v1/papers/saved?email=&limit=&offset=` | 保存済み論文取得（ページネーション付き） |
+| POST | `/api/v1/papers/save` | 論文を保存（body: email, paperId, title 必須） |
 
 ## DB テーブル構成
 - `Papers` — 論文データ（PK: PaperID, CHECK 制約: Title長さ, Year範囲, IsReview値）
