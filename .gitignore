@@ -9,7 +9,6 @@ node_modules/
 
 # Parcel
 .parcel-cache/
-express/public/
 react/dist/
 
 # Database
