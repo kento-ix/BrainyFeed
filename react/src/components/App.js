@@ -10,7 +10,7 @@ const App = () => {
 
     return <>
         <nav className="navbar">
-            <span className="navbar-brand">BrainyFeed</span>
+            <span className="navbar-logo">BRAINYFEED</span>
         </nav>
 
         <main className="main-content">

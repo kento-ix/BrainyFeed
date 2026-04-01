@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { searchPapers, savePaper } from "../services/paperService";
 
 const PaperList = props => {
     const [loading, setLoading] = useState(false);
     const [papers, setPapers] = useState([]);
     const [email, setEmail] = useState('');
-    const [, setSavingId] = useState(null);
 
     const [saveError, setSaveError] = useState('');
     const [fetchError, setFetchError] = useState('');
@@ -15,7 +13,13 @@ const PaperList = props => {
 
         setLoading(true);
         setFetchError('')
-        searchPapers(props.query)
+        fetch(`/api/v1/papers/search?topic=${props.query}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error occurred while searching');
+                }
+                return response.json();
+            })
             .then(data => {
                 setPapers(data.data || []);
                 setLoading(false);
@@ -32,17 +36,33 @@ const PaperList = props => {
             return;
         }
 
-        setSavingId(paper.id);
         setSaveError('');
-        savePaper(email, paper)
-            .then(() => {
-                setPapers(papers.map(p => p.id === paper.id ? { ...p, saved: true } : p));
-                setSavingId(null);
+        fetch('/api/v1/papers/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email,
+                paperId: paper.id,
+                title: paper.title,
+                authors: paper.authors,
+                year: paper.year,
+                abstract: paper.abstract,
+                url: paper.url,
+                isReview: paper.isReview
             })
-            .catch(e => {
-                setSaveError(e.message)
-                setSavingId(null);
-            });
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error occurred while saving');
+            }
+            return response.json();
+        })
+        .then(() => {
+            setPapers(papers.map(p => p.id === paper.id ? { ...p, saved: true } : p));
+        })
+        .catch(e => {
+            setSaveError(e.message)
+        });
     };
 
     return <>
@@ -71,6 +91,7 @@ const PaperList = props => {
                             >
                                 {paper.saved ? "Saved!" : "Save"}
                             </button>
+                            {paper.saved && <p className="success">Paper saved successfully!!</p>}
                             {saveError && <p className="error">{saveError}</p>}
                         </li>
                     ))}

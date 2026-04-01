@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { getSavedPapers } from "../services/paperService";
 
 const LIMIT = 3;
 
@@ -15,7 +14,13 @@ const SavedPaperList = props => {
 
         setLoading(true);
         setFetchError('');
-        getSavedPapers(props.email, LIMIT, (page - 1) * LIMIT)
+        fetch(`/api/v1/papers/saved?email=${props.email}&limit=${LIMIT}&offset=${(page - 1) * LIMIT}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error occurred while fetching saved papers');
+                }
+                return response.json();
+            })
             .then(data => {
                 setPapers(data.data || []);
                 setLoading(false);
