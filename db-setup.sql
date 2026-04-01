@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS Papers;
 
 CREATE TABLE Papers (
     PaperID TEXT PRIMARY KEY,
-    Title TEXT NOT NULL CHECK(length(Title) > 0),
+    Title TEXT NOT NULL,
     Authors TEXT,
     Year INTEGER CHECK(Year > 1900 AND Year <= 2100),
     SourceURL TEXT,
@@ -13,7 +13,7 @@ CREATE TABLE Papers (
 );
 
 CREATE TABLE SavedPapers (
-    Email TEXT NOT NULL CHECK(Email LIKE '%@%.%'),
+    Email TEXT NOT NULL,
     PaperID TEXT NOT NULL,
     SavedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (Email, PaperID),

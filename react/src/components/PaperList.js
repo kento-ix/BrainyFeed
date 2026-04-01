@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
+import { PaperCard } from "./PaperCard";
 
 const PaperList = props => {
     const [loading, setLoading] = useState(false);
     const [papers, setPapers] = useState([]);
-    const [email, setEmail] = useState('');
-
-    const [saveError, setSaveError] = useState('');
     const [fetchError, setFetchError] = useState('');
 
     useEffect(function fetchSearch() {
@@ -30,73 +28,16 @@ const PaperList = props => {
             })
     }, [props.query]);
 
-    const handleSave = (paper) => {
-        if (!email) {
-            setSaveError("Please enter your email to save.");
-            return;
-        }
-
-        setSaveError('');
-        fetch('/api/v1/papers/save', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email,
-                paperId: paper.id,
-                title: paper.title,
-                authors: paper.authors,
-                year: paper.year,
-                abstract: paper.abstract,
-                url: paper.url,
-                isReview: paper.isReview
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error occurred while saving');
-            }
-            return response.json();
-        })
-        .then(() => {
-            setPapers(papers.map(p => p.id === paper.id ? { ...p, saved: true } : p));
-        })
-        .catch(e => {
-            setSaveError(e.message)
-        });
-    };
-
     return <>
         {fetchError && <p className="error">{fetchError}</p>}
         {loading ? (
             <p className="loading">Loading...</p>
         ) : (
-            <>
-                <ul className="paper-list">
-                    {papers.map((paper, index) => (
-                        <li key={index} className="paper-item">
-                            <h3>{paper.title}</h3>
-                            <p>Year {paper.year}</p>
-                            <p>Author {paper.authors}</p>
-                            <p>Abstract {paper.abstract || "No data"}</p>
-                            <a href={paper.url} target="_blank" rel="noreferrer">Original Paper Link</a>
-                            <p>To save this paper, enter your email below and click Save.</p>
-                            <input
-                                type="email"
-                                placeholder="Enter your email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                            />
-                            <button
-                                onClick={() => handleSave(paper)}
-                            >
-                                {paper.saved ? "Saved!" : "Save"}
-                            </button>
-                            {paper.saved && <p className="success">Paper saved successfully!!</p>}
-                            {saveError && <p className="error">{saveError}</p>}
-                        </li>
-                    ))}
-                </ul>
-            </>
+            <ul className="paper-list">
+                {papers.map((paper) => (
+                    <PaperCard paper={paper} />
+                ))}
+            </ul>
         )}
     </>
 };

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import SavedPaperCard from "./SavedPaperCard";
 
 const LIMIT = 3;
 
@@ -43,13 +44,7 @@ const SavedPaperList = props => {
                     ? <p>No saved papers found for this email.</p>
                     : <ul className="paper-list">
                         {papers.map((paper) => (
-                            <li key={paper.PaperID} className="paper-item">
-                                <h3>{paper.Title}</h3>
-                                <p>Year: {paper.Year}</p>
-                                <p>Authors: {paper.Authors}</p>
-                                <p>Abstract: {paper.Abstract || "No data"}</p>
-                                <a href={paper.SourceURL} target="_blank" rel="noreferrer">Original Paper Link</a>
-                            </li>
+                            <SavedPaperCard paper={paper} email={props.email} />
                         ))}
                     </ul>
                 }
