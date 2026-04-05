@@ -17149,6 +17149,11 @@ const PaperCard = (props)=>{
     const [email, setEmail] = (0, _react.useState)('');
     const [saveError, setSaveError] = (0, _react.useState)('');
     const [saved, setSaved] = (0, _react.useState)(false);
+    const [showFullAbstract, setShowFullAbstract] = (0, _react.useState)(false);
+    const abstract = props.paper.abstract || "No data";
+    const words = abstract.split(' ');
+    const isTruncated = words.length > 100;
+    const displayAbstract = isTruncated && !showFullAbstract ? words.slice(0, 100).join(' ') + '...' : abstract;
     const handleSave = ()=>{
         if (!email) {
             setSaveError("Please enter your email to save.");
@@ -17189,7 +17194,7 @@ const PaperCard = (props)=>{
                 children: props.paper.title
             }, void 0, false, {
                 fileName: "src/components/PaperCard.js",
-                lineNumber: 50,
+                lineNumber: 58,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -17199,7 +17204,7 @@ const PaperCard = (props)=>{
                 ]
             }, void 0, true, {
                 fileName: "src/components/PaperCard.js",
-                lineNumber: 51,
+                lineNumber: 59,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -17209,18 +17214,26 @@ const PaperCard = (props)=>{
                 ]
             }, void 0, true, {
                 fileName: "src/components/PaperCard.js",
-                lineNumber: 52,
+                lineNumber: 60,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
                 children: [
                     "Abstract ",
-                    props.paper.abstract || "No data"
+                    displayAbstract
                 ]
             }, void 0, true, {
                 fileName: "src/components/PaperCard.js",
-                lineNumber: 53,
+                lineNumber: 61,
                 columnNumber: 13
+            }, undefined),
+            isTruncated && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>setShowFullAbstract(!showFullAbstract),
+                children: showFullAbstract ? 'Show less' : 'Show more'
+            }, void 0, false, {
+                fileName: "src/components/PaperCard.js",
+                lineNumber: 63,
+                columnNumber: 17
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("a", {
                 href: props.paper.url,
@@ -17229,14 +17242,14 @@ const PaperCard = (props)=>{
                 children: "Original Paper Link"
             }, void 0, false, {
                 fileName: "src/components/PaperCard.js",
-                lineNumber: 54,
+                lineNumber: 67,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
                 children: "To save this paper, enter your email below and click Save."
             }, void 0, false, {
                 fileName: "src/components/PaperCard.js",
-                lineNumber: 55,
+                lineNumber: 68,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
@@ -17246,7 +17259,7 @@ const PaperCard = (props)=>{
                 onChange: (e)=>setEmail(e.target.value)
             }, void 0, false, {
                 fileName: "src/components/PaperCard.js",
-                lineNumber: 56,
+                lineNumber: 69,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -17255,7 +17268,7 @@ const PaperCard = (props)=>{
                 children: "Save"
             }, void 0, false, {
                 fileName: "src/components/PaperCard.js",
-                lineNumber: 62,
+                lineNumber: 75,
                 columnNumber: 13
             }, undefined),
             saved && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -17263,7 +17276,7 @@ const PaperCard = (props)=>{
                 children: "Paper saved successfully!!"
             }, void 0, false, {
                 fileName: "src/components/PaperCard.js",
-                lineNumber: 68,
+                lineNumber: 81,
                 columnNumber: 23
             }, undefined),
             saveError && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -17271,13 +17284,13 @@ const PaperCard = (props)=>{
                 children: saveError
             }, void 0, false, {
                 fileName: "src/components/PaperCard.js",
-                lineNumber: 69,
+                lineNumber: 82,
                 columnNumber: 27
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/PaperCard.js",
-        lineNumber: 49,
+        lineNumber: 57,
         columnNumber: 9
     }, undefined);
 };
@@ -17460,6 +17473,11 @@ var _react = require("react");
 const SavedPaperCard = (props)=>{
     const [deleting, setDeleting] = (0, _react.useState)(false);
     const [deleteError, setDeleteError] = (0, _react.useState)('');
+    const [showFullAbstract, setShowFullAbstract] = (0, _react.useState)(false);
+    const abstract = props.paper.Abstract || "No data";
+    const words = abstract.split(' ');
+    const isTruncated = words.length > 100;
+    const displayAbstract = isTruncated && !showFullAbstract ? words.slice(0, 100).join(' ') + '...' : abstract;
     const handleDelete = ()=>{
         setDeleting(true);
         setDeleteError('');
@@ -17491,7 +17509,7 @@ const SavedPaperCard = (props)=>{
                 children: props.paper.Title
             }, void 0, false, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 32,
+                lineNumber: 40,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -17501,7 +17519,7 @@ const SavedPaperCard = (props)=>{
                 ]
             }, void 0, true, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 33,
+                lineNumber: 41,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -17511,18 +17529,26 @@ const SavedPaperCard = (props)=>{
                 ]
             }, void 0, true, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 34,
+                lineNumber: 42,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
                 children: [
                     "Abstract: ",
-                    props.paper.Abstract || "No data"
+                    displayAbstract
                 ]
             }, void 0, true, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 35,
+                lineNumber: 43,
                 columnNumber: 13
+            }, undefined),
+            isTruncated && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: ()=>setShowFullAbstract(!showFullAbstract),
+                children: showFullAbstract ? 'Show less' : 'Show more'
+            }, void 0, false, {
+                fileName: "src/components/SavedPaperCard.js",
+                lineNumber: 45,
+                columnNumber: 17
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("a", {
                 href: props.paper.SourceURL,
@@ -17531,7 +17557,7 @@ const SavedPaperCard = (props)=>{
                 children: "Original Paper Link"
             }, void 0, false, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 36,
+                lineNumber: 49,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -17540,7 +17566,7 @@ const SavedPaperCard = (props)=>{
                 children: "Delete"
             }, void 0, false, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 37,
+                lineNumber: 50,
                 columnNumber: 13
             }, undefined),
             deleteError && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -17548,13 +17574,13 @@ const SavedPaperCard = (props)=>{
                 children: deleteError
             }, void 0, false, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 38,
+                lineNumber: 51,
                 columnNumber: 29
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/SavedPaperCard.js",
-        lineNumber: 31,
+        lineNumber: 39,
         columnNumber: 9
     }, undefined);
 };

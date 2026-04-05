@@ -3,6 +3,14 @@ export const PaperCard = props => {
     const [email, setEmail] = useState('');
     const [saveError, setSaveError] = useState('');
     const [saved, setSaved] = useState(false);
+    const [showFullAbstract, setShowFullAbstract] = useState(false);
+
+    const abstract = props.paper.abstract || "No data";
+    const words = abstract.split(' ');
+    const isTruncated = words.length > 100;
+    const displayAbstract = isTruncated && !showFullAbstract
+        ? words.slice(0, 100).join(' ') + '...'
+        : abstract;
 
     const handleSave = () => {
         if (!email) {
@@ -50,7 +58,12 @@ export const PaperCard = props => {
             <h3>{props.paper.title}</h3>
             <p>Year {props.paper.year}</p>
             <p>Author {props.paper.authors}</p>
-            <p>Abstract {props.paper.abstract || "No data"}</p>
+            <p>Abstract {displayAbstract}</p>
+            {isTruncated && (
+                <button onClick={() => setShowFullAbstract(!showFullAbstract)}>
+                    {showFullAbstract ? 'Show less' : 'Show more'}
+                </button>
+            )}
             <a href={props.paper.url} target="_blank" rel="noreferrer">Original Paper Link</a>
             <p>To save this paper, enter your email below and click Save.</p>
             <input
