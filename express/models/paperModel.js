@@ -25,3 +25,10 @@ export const getSavedPapersByEmail = (email, limit, offset) => {
         LIMIT ? OFFSET ?
     `).all(email, limit, offset);
 };
+
+export const deleteSavedPaper = (email, paperId) => {
+    return db.prepare(`
+        DELETE FROM SavedPapers
+        WHERE Email = ? AND PaperID = ?
+    `).run(email, paperId);
+};

@@ -1,4 +1,4 @@
-import { upsertPaper, savePaper, getSavedPapersByEmail } from "../models/paperModel.js";
+import { upsertPaper, savePaper as savePaperForUser, getSavedPapersByEmail, deleteSavedPaper } from "../models/paperModel.js";
 
 const S2_API_KEY = process.env.S2_API_KEY;
 
@@ -114,12 +114,41 @@ export const getSavedPapers = (req, res) => {
             {
                 href: `/api/v1/papers/saved?email=${email}`,
                 rel: "self",
-                type: "GET" 
+                type: "GET"
             },
-            { 
+            {
                 href: `/api/v1/papers/save`,
-                rel: "save-paper", 
-                type: "POST" 
+                rel: "save-paper",
+                type: "POST"
+            },
+            {
+                href: `/api/v1/papers/saved`,
+                rel: "delete-paper",
+                type: "DELETE"
+            }
+        ]
+    });
+};
+
+export const deletesavedPaper = (req, res) => {
+    if(res.locals.errors.length != 0) {
+        return res.status(400).json({ status: 400, message: res.locals.errors });
+    }
+
+    const { email, paperId } = req.body;
+    const result = deleteSavedPaper(email, paperId);
+
+    if (result.changes === 0) {
+        return res.status(404).json({ error: "Saved paper not found" });
+    }
+
+    res.json({
+        data: { email, paperId },
+        links: [
+            {
+                href: `/api/v1/papers/saved?email=${email}`,
+                rel: "saved-papers",
+                type: "GET"
             }
         ]
     });

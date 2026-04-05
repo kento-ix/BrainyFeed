@@ -35,6 +35,20 @@ export const savePaperValidator = (req, res, next) => {
     next();
 };
 
+export const deleteSavedPaperValidator = (req, res, next) => {
+    res.locals.errors = [];
+    const { email, paperId } = req.body;
+
+    if (!email) {
+        res.locals.errors.push({ field: 'email', message: 'email is required' });
+    }
+    if (!paperId) {
+        res.locals.errors.push({ field: 'paperId', message: 'paperId is required' });
+    }
+
+    next();
+};
+
 export const sanitizeEmailQuery = (req, res, next) => {
     res.locals.errors = [];
     const { email } = req.query;
