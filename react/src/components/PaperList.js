@@ -13,17 +13,21 @@ const PaperList = props => {
         setFetchError('')
         fetch(`/api/v1/papers/search?topic=${props.query}`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error occurred while searching');
+                if (response.ok) {
+                    return response.json()
                 }
-                return response.json();
+                else {
+                    throw new Error("something went wrong!")
+                }
             })
-            .then(data => {
-                setPapers(data.data || []);
+            .then(response => {
+                // console.log(response);
+                setPapers(response.data || []);
                 setLoading(false);
             })
-            .catch(e => {
-                setFetchError(e.message);
+            .catch(error => {
+                console.log(error);
+                setFetchError(error.message);
                 setLoading(false);
             })
     }, [props.query]);

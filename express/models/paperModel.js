@@ -8,7 +8,7 @@ export const upsertPaper = (paperId, title, authors, year, sourceUrl, abstract, 
     `).run(paperId, title, authors, year, sourceUrl, abstract, isReview ? 1 : 0);
 };
 
-export const savePaperForUser = (email, paperId) => {
+export const savePaper = (email, paperId) => {
     return db.prepare(`
         INSERT OR IGNORE INTO SavedPapers
         (Email, PaperID)
@@ -18,10 +18,10 @@ export const savePaperForUser = (email, paperId) => {
 
 export const getSavedPapersByEmail = (email, limit, offset) => {
     return db.prepare(`
-        SELECT p.*, sp.SavedAt
-        FROM SavedPapers sp
-        JOIN Papers p ON sp.PaperID = p.PaperID
-        WHERE sp.Email = ?
+        SELECT Papers.*, SavedPapers.SavedAt
+        FROM SavedPapers
+        JOIN Papers ON SavedPapers.PaperID = Papers.PaperID
+        WHERE SavedPapers.Email = ?
         LIMIT ? OFFSET ?
     `).all(email, limit, offset);
 };

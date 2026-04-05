@@ -17,17 +17,21 @@ const SavedPaperList = props => {
         setFetchError('');
         fetch(`/api/v1/papers/saved?email=${props.email}&limit=${LIMIT}&offset=${(page - 1) * LIMIT}`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error occurred while fetching saved papers');
+                if (response.ok) {
+                    return response.json()
                 }
-                return response.json();
+                else {
+                    throw new Error("something went wrong!")
+                }
             })
-            .then(data => {
-                setPapers(data.data || []);
+            .then(response => {
+                // console.log(response);
+                setPapers(response.data || []);
                 setLoading(false);
             })
-            .catch(e => {
-                setFetchError(e.message);
+            .catch(error => {
+                console.log(error);
+                setFetchError(error.message);
                 setLoading(false);
             });
     }, [props.email, page]);
@@ -44,7 +48,7 @@ const SavedPaperList = props => {
                     ? <p>No saved papers found for this email.</p>
                     : <ul className="paper-list">
                         {papers.map((paper) => (
-                            <SavedPaperCard paper={paper} email={props.email} />
+                            <SavedPaperCard key={paper.PaperID} paper={paper} email={props.email} />
                         ))}
                     </ul>
                 }

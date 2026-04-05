@@ -26,16 +26,22 @@ export const PaperCard = props => {
             })
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Error occurred while saving');
+            if (response.ok) {
+                return response.json()
             }
-            return response.json();
+            else {
+                return response.json()
+                .then(err => {
+                    throw new Error(JSON.stringify(err.message));
+                });
+            }
         })
         .then(() => {
             setSaved(true);
         })
-        .catch(e => {
-            setSaveError(e.message);
+        .catch(error => {
+            console.log(error);
+            setSaveError(error.message);
         });
     };
 

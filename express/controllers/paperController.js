@@ -1,4 +1,4 @@
-import { upsertPaper, savePaperForUser, getSavedPapersByEmail } from "../models/paperModel.js";
+import { upsertPaper, savePaper, getSavedPapersByEmail } from "../models/paperModel.js";
 
 const S2_API_KEY = process.env.S2_API_KEY;
 
@@ -27,8 +27,8 @@ export const searchReviewPapers = (req, res) => {
         }
         return response.json();
     })
-    .then(data => {
-        const papers = (data.data || [])
+    .then(response => {
+        const papers = (response.data || [])
             .filter(paper => paper.abstract)
             .slice(0, 3)
             .map(paper => ({
@@ -63,6 +63,11 @@ export const searchReviewPapers = (req, res) => {
 };
 
 export const savePaper = (req, res) => {
+    if(res.locals.errors.length != 0) {
+        console.log(res.locals.errors);
+        return res.status(400).json({ status: 400, message: res.locals.errors });
+    }
+
     const { email, paperId, title, authors, year, abstract, url, isReview } = req.body;
 
     upsertPaper(paperId, title, authors, year, url, abstract, isReview);
@@ -89,6 +94,11 @@ export const savePaper = (req, res) => {
 };
 
 export const getSavedPapers = (req, res) => {
+    if(res.locals.errors.length != 0) {
+        console.log(res.locals.errors);
+        return res.status(400).json({ status: 400, message: res.locals.errors });
+    }
+    
     const { email } = req.query;
     const limit = Number(req.query.limit) || 5;
     const offset = Number(req.query.offset) || 0;
