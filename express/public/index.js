@@ -17173,7 +17173,7 @@ const PaperCard = (props)=>{
         }).then((response)=>{
             if (response.ok) return response.json();
             else return response.json().then((err)=>{
-                throw new Error(err.message[0].message);
+                throw new Error(JSON.stringify(err.message));
             });
         }).then(()=>{
             setSaved(true);
@@ -17357,11 +17357,14 @@ const SavedPaperList = (props)=>{
         props.email,
         page
     ]);
+    const handleDelete = (deletedPaperId)=>{
+        setPapers((prev)=>prev.filter((p)=>p.PaperID !== deletedPaperId));
+    };
     if (!props.email) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
         children: "Please enter your email to see your saved papers."
     }, void 0, false, {
         fileName: "src/components/SavedPaperList.js",
-        lineNumber: 39,
+        lineNumber: 43,
         columnNumber: 30
     }, undefined);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
@@ -17371,7 +17374,7 @@ const SavedPaperList = (props)=>{
                 children: fetchError
             }, void 0, false, {
                 fileName: "src/components/SavedPaperList.js",
-                lineNumber: 42,
+                lineNumber: 46,
                 columnNumber: 24
             }, undefined),
             loading ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -17379,7 +17382,7 @@ const SavedPaperList = (props)=>{
                 children: "Loading..."
             }, void 0, false, {
                 fileName: "src/components/SavedPaperList.js",
-                lineNumber: 44,
+                lineNumber: 48,
                 columnNumber: 13
             }, undefined) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
                 children: [
@@ -17387,21 +17390,22 @@ const SavedPaperList = (props)=>{
                         children: "No saved papers found for this email."
                     }, void 0, false, {
                         fileName: "src/components/SavedPaperList.js",
-                        lineNumber: 48,
+                        lineNumber: 52,
                         columnNumber: 23
                     }, undefined) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
                         className: "paper-list",
                         children: papers.map((paper)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _savedPaperCardDefault.default), {
                                 paper: paper,
-                                email: props.email
+                                email: props.email,
+                                onDelete: handleDelete
                             }, paper.PaperID, false, {
                                 fileName: "src/components/SavedPaperList.js",
-                                lineNumber: 51,
+                                lineNumber: 55,
                                 columnNumber: 29
                             }, undefined))
                     }, void 0, false, {
                         fileName: "src/components/SavedPaperList.js",
-                        lineNumber: 49,
+                        lineNumber: 53,
                         columnNumber: 23
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -17413,7 +17417,7 @@ const SavedPaperList = (props)=>{
                                 children: "Prev"
                             }, void 0, false, {
                                 fileName: "src/components/SavedPaperList.js",
-                                lineNumber: 56,
+                                lineNumber: 60,
                                 columnNumber: 21
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
@@ -17423,7 +17427,7 @@ const SavedPaperList = (props)=>{
                                 ]
                             }, void 0, true, {
                                 fileName: "src/components/SavedPaperList.js",
-                                lineNumber: 57,
+                                lineNumber: 61,
                                 columnNumber: 21
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -17432,13 +17436,13 @@ const SavedPaperList = (props)=>{
                                 children: "Next"
                             }, void 0, false, {
                                 fileName: "src/components/SavedPaperList.js",
-                                lineNumber: 58,
+                                lineNumber: 62,
                                 columnNumber: 21
                             }, undefined)
                         ]
                     }, void 0, true, {
                         fileName: "src/components/SavedPaperList.js",
-                        lineNumber: 55,
+                        lineNumber: 59,
                         columnNumber: 17
                     }, undefined)
                 ]
@@ -17452,7 +17456,34 @@ exports.default = SavedPaperList;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
 const SavedPaperCard = (props)=>{
+    const [deleting, setDeleting] = (0, _react.useState)(false);
+    const [deleteError, setDeleteError] = (0, _react.useState)('');
+    const handleDelete = ()=>{
+        setDeleting(true);
+        setDeleteError('');
+        fetch('/api/v1/papers/saved', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: props.email,
+                paperId: props.paper.PaperID
+            })
+        }).then((response)=>{
+            if (response.ok) return response.json();
+            return response.json().then((err)=>{
+                throw new Error(err.error);
+            });
+        }).then(()=>{
+            props.onDelete(props.paper.PaperID);
+        }).catch((error)=>{
+            setDeleteError(error.message);
+            setDeleting(false);
+        });
+    };
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
         className: "paper-item",
         children: [
@@ -17460,7 +17491,7 @@ const SavedPaperCard = (props)=>{
                 children: props.paper.Title
             }, void 0, false, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 4,
+                lineNumber: 32,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -17470,7 +17501,7 @@ const SavedPaperCard = (props)=>{
                 ]
             }, void 0, true, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 5,
+                lineNumber: 33,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -17480,7 +17511,7 @@ const SavedPaperCard = (props)=>{
                 ]
             }, void 0, true, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 6,
+                lineNumber: 34,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -17490,7 +17521,7 @@ const SavedPaperCard = (props)=>{
                 ]
             }, void 0, true, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 7,
+                lineNumber: 35,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("a", {
@@ -17500,18 +17531,35 @@ const SavedPaperCard = (props)=>{
                 children: "Original Paper Link"
             }, void 0, false, {
                 fileName: "src/components/SavedPaperCard.js",
-                lineNumber: 8,
+                lineNumber: 36,
                 columnNumber: 13
+            }, undefined),
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                onClick: handleDelete,
+                disabled: deleting,
+                children: "Delete"
+            }, void 0, false, {
+                fileName: "src/components/SavedPaperCard.js",
+                lineNumber: 37,
+                columnNumber: 13
+            }, undefined),
+            deleteError && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                className: "error",
+                children: deleteError
+            }, void 0, false, {
+                fileName: "src/components/SavedPaperCard.js",
+                lineNumber: 38,
+                columnNumber: 29
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/SavedPaperCard.js",
-        lineNumber: 3,
+        lineNumber: 31,
         columnNumber: 9
     }, undefined);
 };
 exports.default = SavedPaperCard;
 
-},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lW6qc":[function() {},{}]},["8lqZg"], "8lqZg", "parcelRequire77dd", {})
+},{"react/jsx-dev-runtime":"iTorj","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","react":"21dqq"}],"lW6qc":[function() {},{}]},["8lqZg"], "8lqZg", "parcelRequire77dd", {})
 
 //# sourceMappingURL=index.js.map

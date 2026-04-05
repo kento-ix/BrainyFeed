@@ -36,6 +36,10 @@ const SavedPaperList = props => {
             });
     }, [props.email, page]);
 
+    const handleDelete = (deletedPaperId) => {
+        setPapers(prev => prev.filter(p => p.PaperID !== deletedPaperId));
+    };
+
     if (!props.email) return <p>Please enter your email to see your saved papers.</p>;
 
     return <>
@@ -48,7 +52,7 @@ const SavedPaperList = props => {
                     ? <p>No saved papers found for this email.</p>
                     : <ul className="paper-list">
                         {papers.map((paper) => (
-                            <SavedPaperCard key={paper.PaperID} paper={paper} email={props.email} />
+                            <SavedPaperCard key={paper.PaperID} paper={paper} email={props.email} onDelete={handleDelete} />
                         ))}
                     </ul>
                 }
